@@ -1,0 +1,35 @@
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+.nbproject/
+*.bak
+
+# Arquivos temporários e de cache
+*.class
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDEs (caso use IntelliJ ou VS Code junto)
+.idea/
+*.iml
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de pacotes e libs externas
+*.jar
+*.war
+*.ear
+
+# Outros arquivos que você gerar e não quiser versionar
+out/
+target/
