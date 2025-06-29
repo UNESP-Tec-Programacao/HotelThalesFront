@@ -4,9 +4,14 @@
  */
 package br.com.unesp.frontend.thales.hotel.forms.init;
 
+import br.com.unesp.frontend.thales.hotel.request.UserResponse;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import com.formdev.flatlaf.FlatLightLaf;
+import br.com.unesp.frontend.thales.hotel.domain.User;
+import br.com.unesp.frontend.thales.hotel.exceptions.UserNotFoundException;
+import br.com.unesp.frontend.thales.hotel.forms.principal.Home;
+import br.com.unesp.frontend.thales.hotel.request.HttpClient;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -116,15 +121,49 @@ public class Inicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private final String BASE_URL = "http://localhost:8081/public/";
+    
+    private boolean valida(String email, String senha){
+        
+        try{
+            UserResponse response = HttpClient.get(BASE_URL + "user/" + email, UserResponse.class);
+            User user = response.getData() ;
+            System.out.println(user.getName());
+            JOptionPane.showMessageDialog(null, "Usuário logado com sucesso!", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(() -> {
+                JFrame frame = new JFrame("Tela Inicial");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setContentPane(new Home()); // Embute o JPanel
+                frame.pack();
+                frame.setLocationRelativeTo(null); // Centraliza na tela
+                frame.setVisible(true);
+        });
+            
+        }
+        
+        catch(UserNotFoundException exception){
+            JOptionPane.showMessageDialog(null, "Email ou senha inválida! \nPor favor, tente novamente", "Atenção!", JOptionPane.WARNING_MESSAGE);  
+        }
+        
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar logar o usuário! \nPor favor, entre em contato com o suporte do sistema!", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Erro: " + ex.getMessage());
+        }
+
+        return true;
+    }
+    
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
          email = txtMail.getText();
          senha = String.valueOf(txtSenha.getPassword());
          
-         if(email.isBlank()){
+         if(email.isBlank() || email == null){
              JOptionPane.showMessageDialog(null, "Informe o email!", "Erro", JOptionPane.ERROR_MESSAGE);
          }
          
          System.out.println(email);
+         
+         valida(email, senha);
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
