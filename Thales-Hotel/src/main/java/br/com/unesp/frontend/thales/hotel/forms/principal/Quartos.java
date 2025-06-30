@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import javax.swing.JOptionPane;
 import br.com.unesp.frontend.thales.hotel.response.RoomResponse;
+import java.util.Locale;
 import javax.swing.DefaultListModel;
 
 /**
@@ -28,7 +29,8 @@ public class Quartos extends javax.swing.JPanel {
     /**
      * Creates new form Quartos
      */
-    public Quartos() {
+    public Quartos() {  
+        Locale.setDefault(new Locale("pt", "BR"));
         initComponents();
         initRooms();
     }
