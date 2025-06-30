@@ -6,6 +6,8 @@ package br.com.unesp.frontend.thales.hotel.forms.principal;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -32,18 +34,23 @@ public class Home extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnReservas = new javax.swing.JButton();
+        btnQuartos = new javax.swing.JButton();
+        btnHospedes = new javax.swing.JButton();
         lbl_DataDia = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_Dados = new javax.swing.JTable();
 
-        jButton1.setText("Reservas");
+        btnReservas.setText("Reservas");
 
-        jButton2.setText("Quartos");
+        btnQuartos.setText("Quartos");
+        btnQuartos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuartosActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Hóspedes");
+        btnHospedes.setText("Hóspedes");
 
         lbl_DataDia.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -78,11 +85,11 @@ public class Home extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(btnHospedes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnQuartos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnReservas)
                 .addGap(31, 31, 31))
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
@@ -100,18 +107,29 @@ public class Home extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnReservas)
+                    .addComponent(btnQuartos)
+                    .addComponent(btnHospedes))
                 .addGap(30, 30, 30))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnQuartosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuartosActionPerformed
+        SwingUtilities.invokeLater(() -> {
+                JFrame frame = new JFrame("Quartos");
+                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                frame.setContentPane(new Quartos()); // Embute o JPanel
+                frame.pack();
+                frame.setLocationRelativeTo(null); // Centraliza na tela
+                frame.setVisible(true);
+        });
+    }//GEN-LAST:event_btnQuartosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnHospedes;
+    private javax.swing.JButton btnQuartos;
+    private javax.swing.JButton btnReservas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_DataDia;
     private javax.swing.JTable tb_Dados;

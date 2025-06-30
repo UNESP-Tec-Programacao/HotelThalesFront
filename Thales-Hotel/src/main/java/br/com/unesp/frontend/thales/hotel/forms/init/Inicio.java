@@ -4,10 +4,10 @@
  */
 package br.com.unesp.frontend.thales.hotel.forms.init;
 
-import br.com.unesp.frontend.thales.hotel.request.UserResponse;
+import br.com.unesp.frontend.thales.hotel.response.UserResponse;
 import javax.swing.JOptionPane;
 import br.com.unesp.frontend.thales.hotel.domain.User;
-import br.com.unesp.frontend.thales.hotel.exceptions.UserNotFoundException;
+import br.com.unesp.frontend.thales.hotel.exceptions.NotFoundException;
 import br.com.unesp.frontend.thales.hotel.forms.principal.Home;
 import br.com.unesp.frontend.thales.hotel.request.HttpClient;
 import javax.swing.JFrame;
@@ -141,7 +141,7 @@ public class Inicio extends javax.swing.JFrame {
             
         }
         
-        catch(UserNotFoundException exception){
+        catch(NotFoundException exception){
             JOptionPane.showMessageDialog(null, "Email ou senha inválida! \nPor favor, tente novamente", "Atenção!", JOptionPane.WARNING_MESSAGE);  
         }
         

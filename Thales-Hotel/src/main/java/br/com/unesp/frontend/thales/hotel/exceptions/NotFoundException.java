@@ -8,8 +8,8 @@ package br.com.unesp.frontend.thales.hotel.exceptions;
  *
  * @author Eduks
  */
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message){
+public class NotFoundException extends RuntimeException {
+    public NotFoundException(String message){
         super(message);
     }
 }

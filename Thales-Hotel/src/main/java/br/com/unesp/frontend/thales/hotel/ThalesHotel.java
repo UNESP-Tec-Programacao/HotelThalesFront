@@ -6,6 +6,7 @@ package br.com.unesp.frontend.thales.hotel;
 
 import br.com.unesp.frontend.thales.hotel.forms.init.Inicio;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.util.Locale;
 import javax.swing.UIManager;
 
 /**
@@ -16,6 +17,9 @@ public class ThalesHotel {
 
     public static void main(String[] args) {
         try{
+            
+            Locale.setDefault(new Locale("pt", "BR"));
+            
             UIManager.setLookAndFeel(new FlatMacLightLaf());
             Inicio inicio = new Inicio();
             inicio.setVisible(true);
