@@ -4,6 +4,7 @@
  */
 package br.com.unesp.frontend.thales.hotel.forms.principal;
 
+import br.com.unesp.frontend.thales.hotel.domain.Room;
 import br.com.unesp.frontend.thales.hotel.exceptions.NotFoundException;
 import br.com.unesp.frontend.thales.hotel.request.HttpClient;
 import br.com.unesp.frontend.thales.hotel.response.RoomListResponse;
@@ -16,6 +17,8 @@ import javax.swing.JOptionPane;
 import br.com.unesp.frontend.thales.hotel.response.RoomResponse;
 import java.util.Locale;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -34,6 +37,10 @@ public class Quartos extends javax.swing.JPanel {
         initComponents();
         initRooms();
     }
+    
+    public void recarregar(){
+        this.repaint();
+    }
 
     public void initRooms() {
         try {
@@ -49,6 +56,7 @@ public class Quartos extends javax.swing.JPanel {
                 listModel = new DefaultListModel<>();
 
                 response.getData().forEach(room -> {
+                    roomList.add(room);
                     String display = String.format(
                             "[%s] Nº %d - Categoria: %s - R$%.2f",
                             room.getName(),
@@ -89,6 +97,11 @@ public class Quartos extends javax.swing.JPanel {
         jLabel1.setText("Listagem de Quartos");
 
         btnCadastrar.setLabel("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setLabel("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +111,11 @@ public class Quartos extends javax.swing.JPanel {
         });
 
         btnVoltar.setLabel("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
 
         quartosList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -143,6 +161,9 @@ public class Quartos extends javax.swing.JPanel {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         String quartoPExcluir = quartosList.getSelectedValue();
+        Room room = new Room();
+        room = roomList.get(quartosList.getSelectedIndex()).getData();
+        
         if (quartoPExcluir == null || quartoPExcluir.isBlank()) {
             JOptionPane.showMessageDialog(null, "Selecione um quarto para excluir!\n", "Atenção!", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -153,12 +174,31 @@ public class Quartos extends javax.swing.JPanel {
                     JOptionPane.YES_NO_OPTION
             );
             if(resposta == 1){
-                //exclui o quarto
+                Type type = new TypeToken<RoomResponse>() {}.getType();
+                RoomResponse response = HttpClient.delete(IntegraSpring.BASE_URL + "room/" + room.getId(), room, type, null);
             }else{
                JOptionPane.showMessageDialog(null, "Exclusão cancelada pelo usuário!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            frame.dispose();
+        }
+    }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+       SwingUtilities.invokeLater(() -> {
+                JFrame frame = new JFrame("Cadastro de Quartos");
+                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                frame.setContentPane(new CadastrarQuartos()); // Embute o JPanel
+                frame.pack();
+                frame.setLocationRelativeTo(null); // Centraliza na tela
+                frame.setVisible(true);
+        });
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
