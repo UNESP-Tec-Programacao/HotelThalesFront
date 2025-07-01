@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 public class Quartos extends javax.swing.JPanel {
 
     List<RoomResponse> roomList = new ArrayList<>();
+    List<Room> rooms = new ArrayList<>();
     private javax.swing.DefaultListModel<String> listModel;
 
     /**
@@ -56,7 +57,7 @@ public class Quartos extends javax.swing.JPanel {
                 listModel = new DefaultListModel<>();
 
                 response.getData().forEach(room -> {
-                    roomList.add(room);
+                    rooms.add(room);
                     String display = String.format(
                             "[%s] Nº %d - Categoria: %s - R$%.2f",
                             room.getName(),
@@ -162,7 +163,7 @@ public class Quartos extends javax.swing.JPanel {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         String quartoPExcluir = quartosList.getSelectedValue();
         Room room = new Room();
-        room = roomList.get(quartosList.getSelectedIndex()).getData();
+        room = rooms.get(quartosList.getSelectedIndex());
         
         if (quartoPExcluir == null || quartoPExcluir.isBlank()) {
             JOptionPane.showMessageDialog(null, "Selecione um quarto para excluir!\n", "Atenção!", JOptionPane.WARNING_MESSAGE);
@@ -173,9 +174,18 @@ public class Quartos extends javax.swing.JPanel {
                     "Confirmação",
                     JOptionPane.YES_NO_OPTION
             );
-            if(resposta == 1){
+            if(resposta == 0){
                 Type type = new TypeToken<RoomResponse>() {}.getType();
-                RoomResponse response = HttpClient.delete(IntegraSpring.BASE_URL + "room/" + room.getId(), room, type, null);
+                try{
+                    RoomResponse response = HttpClient.delete(IntegraSpring.BASE_URL + "room/" + room.getId(), room, type, null); 
+                    if(response.getStatus() != 200){
+                        throw new Exception("O retorno recebido é diferente do esperado.");
+                    }
+                    JOptionPane.showMessageDialog(null, "Quarto excluído com sucesso!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o quarto: !\nErro: " + ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+                
             }else{
                JOptionPane.showMessageDialog(null, "Exclusão cancelada pelo usuário!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
             }

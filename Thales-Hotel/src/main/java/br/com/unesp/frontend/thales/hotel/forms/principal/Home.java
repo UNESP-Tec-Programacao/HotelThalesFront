@@ -51,6 +51,11 @@ public class Home extends javax.swing.JPanel {
         });
 
         btnHospedes.setText("Hóspedes");
+        btnHospedes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHospedesActionPerformed(evt);
+            }
+        });
 
         lbl_DataDia.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -124,6 +129,17 @@ public class Home extends javax.swing.JPanel {
                 frame.setVisible(true);
         });
     }//GEN-LAST:event_btnQuartosActionPerformed
+
+    private void btnHospedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospedesActionPerformed
+         SwingUtilities.invokeLater(() -> {
+                JFrame frame = new JFrame("Hóspedes");
+                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                frame.setContentPane(new CadastrarHospedes()); // Embute o JPanel
+                frame.pack();
+                frame.setLocationRelativeTo(null); // Centraliza na tela
+                frame.setVisible(true);
+        });
+    }//GEN-LAST:event_btnHospedesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
