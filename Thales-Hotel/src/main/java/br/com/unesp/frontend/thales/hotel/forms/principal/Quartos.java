@@ -19,6 +19,7 @@ import java.util.Locale;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import br.com.unesp.frontend.thales.hotel.dao.RoomDAO;
 
 /**
  *
@@ -29,6 +30,7 @@ public class Quartos extends javax.swing.JPanel {
     List<RoomResponse> roomList = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();
     private javax.swing.DefaultListModel<String> listModel;
+    
 
     /**
      * Creates new form Quartos

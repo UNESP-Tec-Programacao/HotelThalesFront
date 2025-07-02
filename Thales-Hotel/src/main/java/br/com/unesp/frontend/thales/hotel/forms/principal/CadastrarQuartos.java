@@ -150,7 +150,8 @@ public class CadastrarQuartos extends javax.swing.JPanel {
                 txtCategoria.getText(),
                 Double.valueOf(txtF_Preco.getText().replace("R$ ", "").replace(",", ".")),
                 Integer.valueOf(txtPiso.getText()),
-                Integer.valueOf(txtNumero.getText()));
+                Integer.valueOf(txtNumero.getText()),
+                null);
 
         try {
             RoomResponse response = HttpClient.post(

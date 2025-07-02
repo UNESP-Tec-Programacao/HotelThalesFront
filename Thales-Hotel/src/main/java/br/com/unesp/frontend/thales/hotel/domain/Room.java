@@ -27,13 +27,16 @@ public class Room {
     private Integer floor;
 
     private Integer number;
+    
+    private Integer guestNumber;
 
-    public Room(String name, String category, Double price, Integer floor, Integer number) {
+    public Room(String name, String category, Double price, Integer floor, Integer number, Integer guestNumber) {
         this.name = name;
         this.category = category;
         this.price = price;
         this.floor = floor;
         this.number = number;
+        this.guestNumber = guestNumber;
     }
     
     public Room(){}

@@ -4,25 +4,72 @@
  */
 package br.com.unesp.frontend.thales.hotel.forms.principal;
 
+import br.com.unesp.frontend.thales.hotel.dao.RoomDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import br.com.unesp.frontend.thales.hotel.domain.Room;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Eduks
  */
 public class Home extends javax.swing.JPanel {
-    
+
     /**
      * Creates new form Home
      */
+    RoomDAO roomDAO = new RoomDAO();
+    List<Room> quartosDisponiveis = new ArrayList<>();
+    List<Room> quartosLiberando = new ArrayList<>();
+    int quartosDisponiveisInt = 0;
+    int quartosLiberandoInt = 0;
+
     public Home() {
         initComponents();
         LocalDate hoje = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         lbl_DataDia.setText("Data: " + hoje.format(formato));
+        atualizarTabelaDados();
+
+    }
+
+    public void totalDisponiveis() {
+        try {
+            quartosDisponiveis = roomDAO.returnDisponiveis();
+            quartosDisponiveisInt = quartosDisponiveis.size();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os quartos disponíveis!", "Erro!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void atualizarTabelaDados() {
+        totalDisponiveis();
+        totalLiberandoHoje();
+
+        // Cria uma nova linha com os valores desejados
+        Object[] linha = new Object[]{
+            quartosDisponiveisInt,
+            0, // total de hóspedes (substitua por valor real se tiver)
+            quartosLiberandoInt
+        };
+
+        // Atualiza o modelo da tabela
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tb_Dados.getModel();
+        model.setRowCount(0); // limpa a tabela
+        model.addRow(linha);  // adiciona a nova linha
+    }
+
+    public void totalLiberandoHoje() {
+        try {
+            quartosLiberandoInt = roomDAO.returnLiberando();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os quartos a serem liberados hoje!", "Erro!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -42,6 +89,11 @@ public class Home extends javax.swing.JPanel {
         tb_Dados = new javax.swing.JTable();
 
         btnReservas.setText("Reservas");
+        btnReservas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservasActionPerformed(evt);
+            }
+        });
 
         btnQuartos.setText("Quartos");
         btnQuartos.addActionListener(new java.awt.event.ActionListener() {
@@ -121,25 +173,29 @@ public class Home extends javax.swing.JPanel {
 
     private void btnQuartosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuartosActionPerformed
         SwingUtilities.invokeLater(() -> {
-                JFrame frame = new JFrame("Quartos");
-                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                frame.setContentPane(new Quartos()); // Embute o JPanel
-                frame.pack();
-                frame.setLocationRelativeTo(null); // Centraliza na tela
-                frame.setVisible(true);
+            JFrame frame = new JFrame("Quartos");
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            frame.setContentPane(new Quartos()); // Embute o JPanel
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Centraliza na tela
+            frame.setVisible(true);
         });
     }//GEN-LAST:event_btnQuartosActionPerformed
 
     private void btnHospedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospedesActionPerformed
-         SwingUtilities.invokeLater(() -> {
-                JFrame frame = new JFrame("Hóspedes");
-                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                frame.setContentPane(new CadastrarHospedes()); // Embute o JPanel
-                frame.pack();
-                frame.setLocationRelativeTo(null); // Centraliza na tela
-                frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Reservas");
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            frame.setContentPane(new CadastrarHospedes()); // Embute o JPanel
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Centraliza na tela
+            frame.setVisible(true);
         });
     }//GEN-LAST:event_btnHospedesActionPerformed
+
+    private void btnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasActionPerformed
+        
+    }//GEN-LAST:event_btnReservasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
