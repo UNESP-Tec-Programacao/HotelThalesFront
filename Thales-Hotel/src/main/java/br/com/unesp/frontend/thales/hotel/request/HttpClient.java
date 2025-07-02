@@ -4,14 +4,17 @@
  */
 package br.com.unesp.frontend.thales.hotel.request;
 
+import br.com.unesp.frontend.thales.hotel.adapter.InstantTypeAdapter;
 import br.com.unesp.frontend.thales.hotel.exceptions.NotFoundException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.time.Instant;
 
 /**
  *
@@ -19,7 +22,9 @@ import java.util.Map;
  */
 public class HttpClient {
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+        .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+        .create();
 
     public static <T> T get(String urlString, Class<T> responseClass) throws Exception {
         URL url = new URL(urlString);

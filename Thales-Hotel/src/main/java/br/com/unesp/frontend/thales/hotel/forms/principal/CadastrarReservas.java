@@ -4,19 +4,85 @@
  */
 package br.com.unesp.frontend.thales.hotel.forms.principal;
 
+import br.com.unesp.frontend.thales.hotel.dao.RoomDAO;
+import br.com.unesp.frontend.thales.hotel.domain.Customer;
+import br.com.unesp.frontend.thales.hotel.request.HttpClient;
+import br.com.unesp.frontend.thales.hotel.response.CustomerResponse;
+import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.util.List;
+import br.com.unesp.frontend.thales.hotel.domain.Room;
+import br.com.unesp.frontend.thales.hotel.domain.Reserve;
+import java.util.ArrayList;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import br.com.unesp.frontend.thales.hotel.response.VoidResponse;
+import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
 /**
  *
  * @author eteixeira
  */
 public class CadastrarReservas extends javax.swing.JPanel {
 
+    
+    private String pagamentoSelecionado;
+    private Customer cliente = new Customer();
+    private RoomDAO roomDAO = new RoomDAO();
+    private List<Room> quartos = new ArrayList<>();
+    
     /**
      * Creates new form CadastrarReservas
      */
     public CadastrarReservas() {
         initComponents();
+        carregaQuartos();
     }
 
+    public void verificaCPF(String cpf){
+        try{
+            CustomerResponse response = HttpClient.get(IntegraSpring.BASE_URL + "customer/cpf/" + cpf, CustomerResponse.class);
+            if(response.getStatus() == 404){
+                JOptionPane.showMessageDialog(null, "Cliente não encontrado", "Erro", JOptionPane.ERROR_MESSAGE); 
+                return;
+            }
+            cliente = response.getData();
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao tentar inserir o quarto!\nPor favor contate o suporte do sistema.\nErro: " + ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE); 
+        }
+    }
+    
+    public void carregaQuartos(){
+        try{
+            quartos = roomDAO.returnAll();
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar carregar os quartos", "Erro", JOptionPane.ERROR_MESSAGE); 
+        }
+        txtQuarto.removeAllItems();
+        for(Room room : quartos){
+            txtQuarto.addItem(room.getName());
+        }
+    }
+    
+    public Room quartoSelecionado(){
+        return quartos.get(txtQuarto.getSelectedIndex());
+    }
+    
+    public void enviarReserva(Reserve reserve){
+        try{
+            VoidResponse response =  HttpClient.post(IntegraSpring.BASE_URL + "reserve/create", reserve, VoidResponse.class, null);
+            if(response.getStatus() != 201){
+                throw new Exception();
+            }
+            JOptionPane.showMessageDialog(null, "Reserva realizada com sucesso!", "Atenção!", JOptionPane.INFORMATION_MESSAGE); 
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar fazer a reserva\nErro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE); 
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,19 +92,126 @@ public class CadastrarReservas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txt_CPF = new javax.swing.JTextField();
+        txtTipoPagamento = new javax.swing.JComboBox<>();
+        txtQuarto = new javax.swing.JComboBox<>();
+        btnCadastrar = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
+        txt_qtdDias = new javax.swing.JTextField();
+
+        txt_CPF.setText("CPF Cliente...");
+
+        txtTipoPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PIX", "CRÉDITO", "DÉBITO", "DINHEIRO" }));
+        txtTipoPagamento.setSelectedItem(txtTipoPagamento);
+
+        txtQuarto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnCadastrar.setText("Reservar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
+
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
+        txt_qtdDias.setText("Dias de permanência...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_CPF)
+                    .addComponent(txtQuarto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtTipoPagamento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_qtdDias, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addContainerGap(497, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVoltar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCadastrar)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(txt_CPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_qtdDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTipoPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrar)
+                    .addComponent(btnVoltar))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            frame.dispose();
+        }
+    }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        Room quartoSelecionado = new Room();
+        
+        String cpf = txt_CPF.getText();
+        int pagamento = txtTipoPagamento.getSelectedIndex();
+        int diasPermanencia =  Integer.valueOf(txt_qtdDias.getText());
+        
+        verificaCPF(cpf);
+        
+        ZoneId zone = ZoneId.of("America/Sao_Paulo");
+        
+        quartoSelecionado = quartoSelecionado();
+        
+        Instant dtInico = LocalDate.now()
+                .atStartOfDay(zone)
+                .toInstant();
+        
+        Instant dtFinal = LocalDate.now()
+                .plusDays(diasPermanencia)
+                .atTime(LocalTime.MAX)
+                .atZone(zone)
+                .toInstant()
+                ;
+        
+        Double valorTotal = quartoSelecionado.getPrice() * diasPermanencia;
+        
+        Reserve reserva = new Reserve();
+        reserva.setCustomer(cliente);
+        reserva.setRoom(quartoSelecionado);
+        reserva.setPrice(valorTotal);
+        reserva.setPaymentWay(pagamento);
+        reserva.setNumber(0);
+        reserva.setStartsAt(dtInico);
+        reserva.setEndsAt(dtFinal);
+        
+        enviarReserva(reserva);
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnVoltar;
+    private javax.swing.JComboBox<String> txtQuarto;
+    private javax.swing.JComboBox<String> txtTipoPagamento;
+    private javax.swing.JTextField txt_CPF;
+    private javax.swing.JTextField txt_qtdDias;
     // End of variables declaration//GEN-END:variables
 }

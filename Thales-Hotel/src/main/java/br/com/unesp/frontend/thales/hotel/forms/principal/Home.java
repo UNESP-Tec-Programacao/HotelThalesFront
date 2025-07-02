@@ -184,7 +184,7 @@ public class Home extends javax.swing.JPanel {
 
     private void btnHospedesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHospedesActionPerformed
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Reservas");
+            JFrame frame = new JFrame("Hóspedes");
             frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             frame.setContentPane(new CadastrarHospedes()); // Embute o JPanel
             frame.pack();
@@ -194,7 +194,14 @@ public class Home extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHospedesActionPerformed
 
     private void btnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasActionPerformed
-        
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Reservas");
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            frame.setContentPane(new Reservas()); // Embute o JPanel
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Centraliza na tela
+            frame.setVisible(true);
+        });
     }//GEN-LAST:event_btnReservasActionPerformed
 
 
