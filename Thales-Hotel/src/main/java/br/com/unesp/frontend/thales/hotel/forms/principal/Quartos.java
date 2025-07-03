@@ -31,18 +31,17 @@ public class Quartos extends javax.swing.JPanel {
     List<RoomResponse> roomList = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();
     private javax.swing.DefaultListModel<String> listModel;
-    
 
     /**
      * Creates new form Quartos
      */
-    public Quartos() {  
+    public Quartos() {
         Locale.setDefault(new Locale("pt", "BR"));
         initComponents();
         initRooms();
     }
-    
-    public void recarregar(){
+
+    public void recarregar() {
         this.repaint();
     }
 
@@ -167,7 +166,7 @@ public class Quartos extends javax.swing.JPanel {
         String quartoPExcluir = quartosList.getSelectedValue();
         Room room = new Room();
         room = rooms.get(quartosList.getSelectedIndex());
-        
+
         if (quartoPExcluir == null || quartoPExcluir.isBlank()) {
             JOptionPane.showMessageDialog(null, "Selecione um quarto para excluir!\n", "Atenção!", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -177,40 +176,41 @@ public class Quartos extends javax.swing.JPanel {
                     "Confirmação",
                     JOptionPane.YES_NO_OPTION
             );
-            if(resposta == 0){
-                Type type = new TypeToken<RoomResponse>() {}.getType();
-                try{
-                    RoomResponse response = HttpClient.delete(IntegraSpring.BASE_URL + "room/" + room.getId(), room, type, null); 
-                    if(response.getStatus() != 200){
+            if (resposta == 0) {
+                Type type = new TypeToken<RoomResponse>() {
+                }.getType();
+                try {
+                    RoomResponse response = HttpClient.delete(IntegraSpring.BASE_URL + "room/" + room.getId(), room, type, null);
+                    if (response.getStatus() != 200) {
                         throw new Exception("O retorno recebido é diferente do esperado.");
                     }
                     JOptionPane.showMessageDialog(null, "Quarto excluído com sucesso!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
                     new AtualizaUtil().atualizar();
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o quarto: !\nErro: " + ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
-                
-            }else{
-               JOptionPane.showMessageDialog(null, "Exclusão cancelada pelo usuário!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Exclusão cancelada pelo usuário!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (frame != null) {
-            frame.dispose();
-        }
-    }//GEN-LAST:event_btnVoltarActionPerformed
+        frame.setContentPane(new Home()); // volta para a tela Home
+        frame.revalidate();
+        frame.repaint();
+}//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-       SwingUtilities.invokeLater(() -> {
-                JFrame frame = new JFrame("Cadastro de Quartos");
-                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                frame.setContentPane(new CadastrarQuartos()); // Embute o JPanel
-                frame.pack();
-                frame.setLocationRelativeTo(null); // Centraliza na tela
-                frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Cadastro de Quartos");
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            frame.setContentPane(new CadastrarQuartos()); // Embute o JPanel
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Centraliza na tela
+            frame.setVisible(true);
         });
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

@@ -223,9 +223,9 @@ public class CadastrarHospedes extends javax.swing.JPanel {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (frame != null) {
-            frame.dispose();
-        }
+        frame.setContentPane(new Home()); 
+        frame.revalidate();
+        frame.repaint();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void txtF_(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtF_
