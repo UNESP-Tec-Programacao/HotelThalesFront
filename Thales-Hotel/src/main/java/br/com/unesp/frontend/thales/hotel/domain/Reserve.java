@@ -67,6 +67,14 @@ public class Reserve {
         return paymentWay;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setPaymentWay(int pay) {
         
         if(pay == 0) this.paymentWay = PaymentWay.CREDIT_CARD;

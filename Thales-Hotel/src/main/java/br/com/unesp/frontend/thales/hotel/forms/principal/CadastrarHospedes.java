@@ -8,6 +8,7 @@ import br.com.unesp.frontend.thales.hotel.domain.Customer;
 import br.com.unesp.frontend.thales.hotel.request.HttpClient;
 import br.com.unesp.frontend.thales.hotel.response.CustomerResponse;
 import br.com.unesp.frontend.thales.hotel.response.RoomListResponse;
+import br.com.unesp.frontend.thales.hotel.util.AtualizaUtil;
 import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Color;
@@ -48,7 +49,8 @@ public class CadastrarHospedes extends javax.swing.JPanel {
             }
             
             JOptionPane.showMessageDialog(null, "Hóspede cadastrado com sucesso!", "Erro!", JOptionPane.INFORMATION_MESSAGE);
-
+             new AtualizaUtil().atualizar();
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao tentar cadastrar um hóspede!\n Erro: " + ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
         }

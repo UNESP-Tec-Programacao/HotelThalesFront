@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import br.com.unesp.frontend.thales.hotel.response.VoidResponse;
+import br.com.unesp.frontend.thales.hotel.util.AtualizaUtil;
 import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
 /**
  *
@@ -78,6 +79,7 @@ public class CadastrarReservas extends javax.swing.JPanel {
                 throw new Exception();
             }
             JOptionPane.showMessageDialog(null, "Reserva realizada com sucesso!", "Atenção!", JOptionPane.INFORMATION_MESSAGE); 
+             new AtualizaUtil().atualizar();
         }catch (Exception ex){
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar fazer a reserva\nErro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE); 
         }

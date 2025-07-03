@@ -7,6 +7,7 @@ package br.com.unesp.frontend.thales.hotel.forms.principal;
 import br.com.unesp.frontend.thales.hotel.domain.Room;
 import br.com.unesp.frontend.thales.hotel.request.HttpClient;
 import br.com.unesp.frontend.thales.hotel.response.RoomResponse;
+import br.com.unesp.frontend.thales.hotel.util.AtualizaUtil;
 import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -167,6 +168,7 @@ public class CadastrarQuartos extends javax.swing.JPanel {
             
             JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Atenção!", JOptionPane.INFORMATION_MESSAGE); 
             new Quartos().recarregar();
+             new AtualizaUtil().atualizar();
             
             
         } catch (Exception ex) {

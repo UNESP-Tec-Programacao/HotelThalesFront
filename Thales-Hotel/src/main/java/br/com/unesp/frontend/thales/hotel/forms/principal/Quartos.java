@@ -20,6 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import br.com.unesp.frontend.thales.hotel.dao.RoomDAO;
+import br.com.unesp.frontend.thales.hotel.util.AtualizaUtil;
 
 /**
  *
@@ -184,6 +185,7 @@ public class Quartos extends javax.swing.JPanel {
                         throw new Exception("O retorno recebido é diferente do esperado.");
                     }
                     JOptionPane.showMessageDialog(null, "Quarto excluído com sucesso!\n", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
+                    new AtualizaUtil().atualizar();
                 }catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "Ocorreu um erro ao tentar excluir o quarto: !\nErro: " + ex.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
