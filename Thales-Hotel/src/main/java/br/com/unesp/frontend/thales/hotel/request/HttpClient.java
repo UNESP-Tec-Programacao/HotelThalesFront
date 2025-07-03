@@ -5,6 +5,7 @@
 package br.com.unesp.frontend.thales.hotel.request;
 
 import br.com.unesp.frontend.thales.hotel.adapter.InstantTypeAdapter;
+import br.com.unesp.frontend.thales.hotel.domain.Login;
 import br.com.unesp.frontend.thales.hotel.exceptions.NotFoundException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -30,6 +31,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
+        setDefaultHeaders(conn);
 
         int status = conn.getResponseCode();
         if (status != 200) {
@@ -55,6 +57,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
+        setDefaultHeaders(conn);
 
         int status = conn.getResponseCode();
         if (status != 200) {
@@ -79,6 +82,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
+        setDefaultHeaders(conn);
 
         // Adiciona os headers
         if (headers != null) {
@@ -109,6 +113,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        setDefaultHeaders(conn);
         conn.setDoOutput(true);
         conn.setRequestProperty("Content-Type", "application/json");
 
@@ -147,6 +152,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        setDefaultHeaders(conn);
         conn.setDoOutput(true);
         conn.setRequestProperty("Content-Type", "application/json");
 
@@ -185,6 +191,7 @@ public class HttpClient {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
+        setDefaultHeaders(conn);
         conn.setDoOutput(true); // Permitir corpo
         conn.setRequestProperty("Content-Type", "application/json");
 
@@ -221,5 +228,12 @@ public class HttpClient {
             conn.disconnect();
         }
     }
+    
+    private static void setDefaultHeaders(HttpURLConnection conn) {
+    if (Login.Auth != null && !Login.Auth.isEmpty()) {
+        conn.setRequestProperty("Authorization", Login.Auth);
+    }
+}
+
 
 }

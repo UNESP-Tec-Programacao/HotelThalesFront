@@ -10,8 +10,11 @@ import br.com.unesp.frontend.thales.hotel.domain.User;
 import br.com.unesp.frontend.thales.hotel.exceptions.NotFoundException;
 import br.com.unesp.frontend.thales.hotel.forms.principal.Home;
 import br.com.unesp.frontend.thales.hotel.request.HttpClient;
+import br.com.unesp.frontend.thales.hotel.response.LoginResponse;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import br.com.unesp.frontend.thales.hotel.domain.Login;
+import br.com.unesp.frontend.thales.hotel.util.IntegraSpring;
 
 /**
  *
@@ -121,14 +124,18 @@ public class Inicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String BASE_URL = "http://localhost:8081/public/";
     
     private boolean valida(String email, String senha){
         
         try{
-            UserResponse response = HttpClient.get(BASE_URL + "user/" + email, UserResponse.class);
+            UserResponse response = HttpClient.get(IntegraSpring.BASE_URL + "public/user/" + email, UserResponse.class);
             User user = response.getData() ;
             System.out.println(user.getName());
+            
+            LoginResponse loginResponse = HttpClient.get(IntegraSpring.BASE_URL + "public/login/" + user.getCpf(), LoginResponse.class);
+            System.out.println("Logado: " + loginResponse.getData());
+            Login.setAuth(loginResponse.getData());
+            
             JOptionPane.showMessageDialog(null, "Usuário logado com sucesso!", "Atenção!", JOptionPane.INFORMATION_MESSAGE);
             SwingUtilities.invokeLater(() -> {
                 JFrame frame = new JFrame("Tela Inicial");
@@ -142,7 +149,7 @@ public class Inicio extends javax.swing.JFrame {
         }
         
         catch(NotFoundException exception){
-            JOptionPane.showMessageDialog(null, "Email ou senha inválida! \nPor favor, tente novamente", "Atenção!", JOptionPane.WARNING_MESSAGE);  
+            JOptionPane.showMessageDialog(null, "Email ou senha inválida! \nPor favor, tente novamente\n" + exception.getMessage(), "Atenção!", JOptionPane.WARNING_MESSAGE);  
         }
         
         catch (Exception ex){

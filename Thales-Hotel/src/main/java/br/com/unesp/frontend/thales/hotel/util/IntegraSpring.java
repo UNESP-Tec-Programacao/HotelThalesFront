@@ -10,6 +10,6 @@ package br.com.unesp.frontend.thales.hotel.util;
  */
 public class IntegraSpring {
     
-    public static final String BASE_URL = "http://localhost:8081/public/";
+    public static final String BASE_URL = "http://localhost:8081/";
     
 }
